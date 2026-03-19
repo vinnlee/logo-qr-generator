@@ -1,26 +1,129 @@
 @import "tailwindcss";
 
+@theme {
+  --color-accent: var(--accent-resolved);
+}
+
+/* -----------------------------------------------------------------------------
+   Design tokens (raw HSL components). .dark overrides for dark theme.
+   -------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: 0 0% 87%;
+  --fg: 0 0% 25%;
+  --fg-muted: 0 0% 40%;
+  --border: 0 0% 70%;
+  --accent: 82 100% 89%;
+  --accent-soft: 82 100% 94%;
+  --footer-h: 2.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root.dark {
+  --bg: 0 0% 6%;
+  --fg: 45 3% 46%;
+  --fg-muted: 0 0% 55%;
+  --fg-subtle: 0 0% 45%;
+  --border: 0 0% 18%;
+  --accent: 50 15% 76%;
+  --accent-soft: 0 0% 12%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Resolved colors (single source, uses raw tokens above) */
+:root {
+  --bg-primary: hsl(var(--bg));
+  --bg-secondary: hsl(var(--accent-soft));
+  --text-primary: hsl(var(--fg));
+  --text-muted: hsl(var(--fg-muted));
+  --text-accent: hsl(var(--accent));
+  --accent-resolved: hsl(var(--accent));
+  --border-color: hsl(var(--border));
+}
+
+/* -----------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  body {
+    @apply antialiased;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-accent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* -----------------------------------------------------------------------------
+   Components
+   -------------------------------------------------------------------------- */
+@layer components {
+  .inner {
+    @apply mx-auto w-full max-w-5xl px-6;
+  }
+
+  .input {
+    @apply w-full rounded px-3 py-2 text-sm outline-none transition-colors;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+
+  .input::placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+  }
+
+  .input:focus {
+    border-color: var(--text-muted);
+  }
+
+  input[type="range"] {
+    accent-color: var(--text-primary);
+  }
+
+  .btn {
+    @apply transition-colors transition-opacity;
+  }
+
+  .btn:hover:not(:disabled) {
+    background-color: var(--accent-resolved);
+    color: var(--bg-primary);
+  }
+
+  .btn-primary {
+    background-color: var(--accent-resolved);
+    color: var(--bg-primary);
+    border-color: var(--accent-resolved);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--accent-resolved);
+    color: var(--bg-primary);
+    border-color: var(--accent-resolved);
+    opacity: 0.85;
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    border-color: var(--border-color);
+    color: var(--text-muted);
+  }
+
+  .btn-active {
+    background-color: var(--accent-resolved);
+    color: var(--bg-primary);
+    border-color: var(--accent-resolved);
+  }
+
+  .btn-active:hover:not(:disabled) {
+    background-color: var(--accent-resolved);
+    color: var(--bg-primary);
+    border-color: var(--accent-resolved);
+    opacity: 0.85;
+  }
 }
